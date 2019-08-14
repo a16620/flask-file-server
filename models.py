@@ -24,6 +24,7 @@ class DBFilePath(db.Model):
     parentid = db.Column(db.Integer, nullable=True)
     name = db.Column(db.String(128), nullable=False)
     path = db.Column(db.String(128), nullable=True)
+    idpath = db.Column(db.String(128), nullable=True)
 
     #def __init__(self, fileid, parentid):
     #    self.fileid = fileid

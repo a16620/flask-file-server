@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>부트스트랩 101 템플릿</title>
+    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='bootstrap-theme.min.css') }}" rel="stylesheet">
+    <style>
+      .margin1 {
+        margin-bottom: 0px;
+        margin-top: 2px;
+      }
+    </style>
+  </head>
+  <body>
+      <ul class="nav nav-pills">
+          <li role="presentation"><a href="#">파일 업로드</a></li>
+          <li role="presentation"><ol class="breadcrumb margin1">
+              {% if path != None %}
+              {% for p in path %}
+              <li>{{p}}</li>
+              {% endfor %}
+              {% endif %}
+              {% if lastpath != None %}
+              <li class="active">{{lastpath}}</li>
+              {% endif %}
+            </ol>
+          </li>
+      </ul>
+    <div class="list-group">
+      {% if folders != None %}{% for folder in folders %}
+      <a href="#" class="list-group-item">{{folder.name}}</a>
+      {% endfor %}{% endif %}
+      {% if files != None %}{% for file in files %}
+      <a href="#" class="list-group-item">{{file.filename}}</a>
+      {% endfor %}{% endif %}
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}">
+      var dir = {{fid}};
+    </script>
+  </body>
+</html>

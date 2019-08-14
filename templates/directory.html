@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>부트스트랩 101 템플릿</title>
+    <title>내 서버</title>
     <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='bootstrap-theme.min.css') }}" rel="stylesheet">
     <style>
@@ -16,30 +16,80 @@
   </head>
   <body>
       <ul class="nav nav-pills">
-          <li role="presentation"><a href="#">파일 업로드</a></li>
+          <li role="presentation"><a type="button" class="btn btn-defalut" data-toggle="modal" data-target="#fileuploadmodal">파일 업로드</a></li>
+          <li role="presentation"><a type="button" class="btn btn-defalut" data-toggle="modal" data-target="#crtfldmodal">폴더 추가</a></li>
           <li role="presentation"><ol class="breadcrumb margin1">
               {% if path != None %}
               {% for p in path %}
-              <li>{{p}}</li>
+              <li><a href="http://localhost:5000/dir/{{p[1]}}">{{p[0]}}</a></li>
               {% endfor %}
               {% endif %}
               {% if lastpath != None %}
-              <li class="active">{{lastpath}}</li>
+              <li class="active">{{lastpath[0]}}</li>
               {% endif %}
             </ol>
           </li>
       </ul>
     <div class="list-group">
       {% if folders != None %}{% for folder in folders %}
-      <a href="#" class="list-group-item">{{folder.name}}</a>
+      <a href="http://localhost:5000/dir/{{folder.id}}" class="list-group-item"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> {{folder.name}}</a>
       {% endfor %}{% endif %}
       {% if files != None %}{% for file in files %}
-      <a href="#" class="list-group-item">{{file.filename}}</a>
+      <a href="http://localhost:5000/download/{{file.fid}}" class="list-group-item"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{file.filename}}</a>
       {% endfor %}{% endif %}
     </div>
+
+    <div class="modal fade" id="fileuploadmodal" tabindex="-1" role="dialog" aria-labelledby="FULabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-header">
+              <h4 class="modal-title" id="FULabel">파일 업로드</h4>
+            </div>
+          </div>
+          <div class="modal-body">
+            <form id="frmsubmit" action="http://localhost:5000/upload/{{fid}}" method="post" enctype="multipart/form-data">
+              <input type="file" name="file">
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+            <button id="btnsubmit" type="button" class="btn btn-primary">업로드</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="crtfldmodal" tabindex="-1" role="dialog" aria-labelledby="FULabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div class="modal-header">
+                <h4 class="modal-title" id="FULabel">폴더 추가</h4>
+              </div>
+            </div>
+            <div class="modal-body">
+              <form id="frmsubmit2" action="http://localhost:5000/createfolder/{{fid}}" method="get" enctype="multipart/form-data">
+                <input type="text" class="form-control" placeholder="폴더 이름" name="foldername">
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              <button id="btnsubmit2" type="button" class="btn btn-primary">생성</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='bootstrap.min.js') }}">
-      var dir = {{fid}};
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script type="text/javascript">
+      $("#btnsubmit").click(function() {
+        $("#frmsubmit").submit();
+      });
+      $("#btnsubmit2").click(function() {
+        $("#frmsubmit2").submit();
+      });
     </script>
   </body>
 </html>
